@@ -21,4 +21,5 @@ public interface ContactRepository extends PagingAndSortingRepository<Contact, I
 	 * @return contato
 	 */
 	Page<Contact> findByNameLike(Pageable pageable, String name);
+	
 }
