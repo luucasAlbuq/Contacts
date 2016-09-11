@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,13 @@ public class ContactService {
 
 	@Autowired
 	ContactRepository contactRepository;
+	
+	@Transactional(readOnly = true)
+	public List<Contact> findByName(String name){
+		Sort sortByName = new Sort(Sort.Direction.ASC,"name");
+		final PageRequest pageResquest = new PageRequest(5,10,sortByName);
+		return contactRepository.findByNameLike(pageResquest, "%"+name+"%").getContent();
+	}
 	
 	@Transactional
 	public List<Contact> findAll(int numeroPaginas, int numeroMaxContatosPorPagina){
@@ -58,4 +66,5 @@ public class ContactService {
 	public Contact save(Contact contact){
 		return contactRepository.save(contact);
 	}
+	
 }
